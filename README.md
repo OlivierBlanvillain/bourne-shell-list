@@ -1,2 +1,3 @@
-bourne-shell-list
-=================
+Test with:
+
+    sh test
