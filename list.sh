@@ -1,28 +1,23 @@
 # Constructs a list from a string where elements are space separated
 # def list: List[String]
 list() {
-  for i in "$@"; do
-    echo "$i"
-  done
+  for i in "$@"; do echo "$i"; done
 }
 
 # Selects an element by its index in the list.
 # def apply(n: Int): A
 apply() {
-  :
-}
-
-# Returns a new list containing the elements from the left hand operand
-# followed by the elements from the right hand operand.
-# def cons(that: List[String]): List[String]
-cons() {
-  :
+  for _ in $(seq 0 $1); do read x; done
+  echo "$x"
 }
 
 # Tests whether this list contains a given value as an element.
 # def contains(elem: String): Boolean
 contains() {
-  :
+  while read x; do
+    test "$x" = "$1" && return 0
+  done
+  return 1
 }
 
 # Counts the number of elements in the list which satisfy a predicate.
@@ -34,7 +29,8 @@ count() {
 # Selects all elements except first `n` ones.
 # def drop(n: Int): List[String]
 drop() {
-  :
+  for _ in $(seq 1 $1); do read x; done
+  while read x; do echo "$x"; done
 }
 
 # Drops longest prefix of elements that satisfy a predicate.
@@ -105,33 +101,33 @@ foreach() {
 # Selects the first element of this list.
 # def head: String
 head() {
-  # Conflict!
-  :
+  read x
+  echo "$x"
 }
 
 # Selects all elements except the last.
 # def init: List[String]
 init() {
-  :
+  sed '$d'
 }
 
 # Tests whether the list is empty.
 # def isempty: Boolean
 isempty() {
-  :
+  ! read x
 }
 
 # Selects the last element.
 # def last: String
 last() {
   # Conflict!
-  :
+  sed -n '$p'
 }
 
 # The length of the list.
 # def length: Int
 length() {
-  :
+  wc -l
 }
 
 # Builds a new collection by applying a function to all elements of this
@@ -142,21 +138,19 @@ map() {
 }
 
 # Displays all elements of this list in a string using a separator string.
-# def mkstring(sep: String): String
+# def mkstring(sep: String = " "): String
 mkstring() {
-  :
-}
-
-# Displays all elements of this list in a string.
-# def mkstring: String
-mkstring() {
-  :
+  if [ $# -eq 0 ]; then
+    tr '\n' ' ' | sed 's/.$//'
+  else
+    tr '\n' $1 | sed 's/.$//'
+  fi
 }
 
 # Tests whether the list is not empty.
 # def nonempty: Boolean
 nonempty() {
-  :
+  read x
 }
 
 # Reduces the elements of this list using the specified associative binary
@@ -183,14 +177,7 @@ reduceright() {
 # Returns new list with elements in reversed order.
 # def reverse: List[String]
 reverse() {
-  :
-}
-
-# The size of this list.
-# def size: Int
-size() {
-  # Conflict!
-  :
+  tac
 }
 
 # Selects all elements except the first.
