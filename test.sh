@@ -1,7 +1,8 @@
 . ./test-framework.sh
-target='./list.sh'
-shells='ash bash dash ksh mksh pdksh posh zsh'
-disabled='head tail wc tac'
+
+testing 'list.sh'
+withfallbackfor 'head tail wc tac'
+onshells 'posh dash ash bash ksh mksh pdksh zsh'
 
 check 'list "j e" "t u" "vo us" | apply 1' 't u'
 checktrue 'list 1 2 | contains 1'
@@ -49,5 +50,3 @@ check 'list 7 34 56 12 4 23 | reduceleft expr _ / _' '0'
 check 'list 7 34 56 12 4 23 | reduce expr _ / _' '0'
 check 'list 34 56 12 4 23 7 | reduceright expr _1 / _2' '8'
 check 'list 34 56 12 4 23 7 | reduceright expr _ / _' '8'
-
-printresult

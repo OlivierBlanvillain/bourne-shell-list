@@ -264,7 +264,7 @@ takeright() {
 takewhile() {
   while read x; do
     eval test $(__desugar_function_1 $@) || break
-    echo "$x"
+    echo $x
   done
 }
 
