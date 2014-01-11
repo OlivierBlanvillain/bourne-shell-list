@@ -64,10 +64,10 @@ count() {
   echo $i
 }
 
-# Selects all elements except first `n` ones.
+# Selects all elements except first n ones.
 # def drop(n: Int): List[String]
 drop() {
-  tail -n$1
+  sed 1,$1d
 }
 
 # Drops longest prefix of elements that satisfy a predicate.
@@ -159,12 +159,8 @@ forall() {
 # Uses /usr/bin/head when called with arguments.
 # def head: String
 head() {
-  if [ $# -eq 0 ]; then
-    read x
-    echo "$x"
-  else
-    /usr/bin/head $@
-  fi
+  read x
+  echo "$x"
 }
 
 # Selects all elements except the last.
@@ -183,13 +179,13 @@ isempty() {
 # def last: String
 last() {
   # Conflict!
-  tail -n1
+  sed '$!d'
 }
 
 # The length of the list.
 # def length: Int
 length() {
-  wc -l # || awk 'END{print NR}'
+  wc -l 2> /dev/null || awk 'END{ print NR }'
 }
 
 # Builds a new collection by applying a function to all elements of this
@@ -247,24 +243,20 @@ reverse() {
 # Uses /usr/bin/tail when called with arguments.
 # def tail: List[String]
 tail() {
-  if [ $# -eq 0 ]; then
-    read x
-    cat
-  else
-    /usr/bin/tail $@
-  fi
+  read x
+  cat
 }
 
-# Selects first `n` elements.
+# Selects first n elements.
 # def take(n: Int): List[String]
 take() {
-  head -n$1
+  sed "1,$1!d"
 }
 
 # Selects last n elements.
 # def takeright(n: Int): List[String]
 takeright() {
-  tail -n$1
+  reverse | take $@ | reverse
 }
 
 # Takes longest prefix of elements that satisfy a predicate.

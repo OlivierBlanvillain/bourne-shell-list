@@ -7,21 +7,35 @@ failed=0
 
 check() {
   shells='ash bash dash ksh mksh pdksh posh zsh'
-  f='tail head tac wc'
+  disabled='
+  tail() {
+    tail_disabled
+  }
+  head() {
+    head_disabled
+  }
+  tac() {
+    tac_disabled
+  }
+  wc() {
+    wc_disabled
+  };'
   runing=$1
   expected=$2
-  for shell in $shells; do
-    got=$($shell -c ". ./list.sh; $runing")
-    if [ "$got" = "$expected" ]; then
-      passed=$(expr 1 + $passed)
-    else
-      echo "\
-${BOLD}-Running on $shell:${NONE}\n$runing
-${BOLD}-Expected:${NONE}\n$expected
-${BOLD}-Got:${NONE}\n$got"
-      failed=$(expr 1 + $failed)
-    fi
+  for d in "$disabled" ''; do
+    for shell in $shells; do
+      got=$($shell -c "$f . ./list.sh; $runing")
+      if [ ! "$got" = "$expected" ]; then
+        echo "\
+  ${BOLD}-Running on $shell:${NONE}\n$runing
+  ${BOLD}-Expected:${NONE}\n$expected
+  ${BOLD}-Got:${NONE}\n$got"
+        failed=$(expr 1 + $failed)
+        return 1
+      fi
+    done
   done
+  passed=$(expr 1 + $passed)
 }
 
 checktrue() {
