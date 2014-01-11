@@ -1,67 +1,7 @@
-NONE='\033[00m'
-BOLD='\033[1m'
-RED='\033[01;31m'
-GREEN='\033[01;32m'
-passed=0
-failed=0
-
-check() {
-  shells='ash bash dash ksh mksh pdksh posh zsh'
-  disabled='
-  tail() {
-    tail_disabled
-  }
-  head() {
-    head_disabled
-  }
-  tac() {
-    tac_disabled
-  }
-  wc() {
-    wc_disabled
-  };'
-  runing=$1
-  expected=$2
-  for d in "$disabled" ''; do
-    for shell in $shells; do
-      got=$($shell -c "$f . ./list.sh; $runing")
-      if [ ! "$got" = "$expected" ]; then
-        echo "\
-  ${BOLD}-Running on $shell:${NONE}\n$runing
-  ${BOLD}-Expected:${NONE}\n$expected
-  ${BOLD}-Got:${NONE}\n$got"
-        failed=$(expr 1 + $failed)
-        return 1
-      fi
-    done
-  done
-  passed=$(expr 1 + $passed)
-}
-
-checktrue() {
-  check "($1 && echo true) || echo false" "true"
-}
-
-checkfalse() {
-  check "($1 && echo true) || echo false" "false"
-}
-
-printresult() {
-  linewidth=$(stty size | awk '{print $2}')
-  if [ $failed = 0 ]; then
-    message=" $passed passed "
-    echo -n $GREEN
-  else
-    message=" $failed failed, $passed passed "
-    echo -n $RED
-  fi
-  nequals="$(seq 1 $((($linewidth - $(expr length "$message")) / 2)))"
-  echo -n $BOLD
-  for i in $nequals; do echo -n =; done
-  echo -n "$message"
-  for i in $nequals; do echo -n =; done
-  echo $NONE
-}
+. ./test-framework.sh
+target='./list.sh'
+shells='ash bash dash ksh mksh pdksh posh zsh'
+disabled='head tail wc tac'
 
 check 'list "j e" "t u" "vo us" | apply 1' 't u'
 checktrue 'list 1 2 | contains 1'

@@ -185,7 +185,7 @@ last() {
 # The length of the list.
 # def length: Int
 length() {
-  wc -l 2> /dev/null || awk 'END{ print NR }'
+  wc -l 2>/dev/null || awk 'END{ print NR }'
 }
 
 # Builds a new collection by applying a function to all elements of this
@@ -264,7 +264,7 @@ takeright() {
 takewhile() {
   while read x; do
     eval test $(__desugar_function_1 $@) || break
-    echo $x
+    echo "$x"
   done
 }
 
