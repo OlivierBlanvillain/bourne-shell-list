@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv='content-type' value='text/html;charset=utf8'>
+  <meta name='generator' value='Ronn/v0.7.3 (http://github.com/rtomayko/ronn/tree/0.7.3)'>
+  <title>bourne-shell-list(1) - functional programming in your shell</title>
+  <style type='text/css' media='all'>
+  /* style: man */
+  body#manpage {margin:0}
+  .mp {max-width:100ex;padding:0 9ex 1ex 4ex}
+  .mp p,.mp pre,.mp ul,.mp ol,.mp dl {margin:0 0 20px 0}
+  .mp h2 {margin:10px 0 0 0}
+  .mp > p,.mp > pre,.mp > ul,.mp > ol,.mp > dl {margin-left:8ex}
+  .mp h3 {margin:0 0 0 4ex}
+  .mp dt {margin:0;clear:left}
+  .mp dt.flush {float:left;width:13ex}
+  .mp dd {margin:0 0 0 13ex}
+  .mp h1,.mp h2,.mp h3,.mp h4 {clear:left}
+  .mp pre {margin-bottom:20px}
+  .mp pre+h2,.mp pre+h3 {margin-top:22px}
+  .mp h2+pre,.mp h3+pre {margin-top:5px}
+  .mp img {display:block;margin:auto}
+  .mp h1.man-title {display:none}
+  .mp,.mp code,.mp pre,.mp tt,.mp kbd,.mp samp,.mp h3,.mp h4 {font-family:monospace;font-size:14px;line-height:1.42857142857143}
+  .mp h2 {font-size:16px;line-height:1.25}
+  .mp h1 {font-size:20px;line-height:2}
+  .mp {text-align:justify;background:#fff}
+  .mp,.mp code,.mp pre,.mp pre code,.mp tt,.mp kbd,.mp samp {color:#131211}
+  .mp h1,.mp h2,.mp h3,.mp h4 {color:#030201}
+  .mp u {text-decoration:underline}
+  .mp code,.mp strong,.mp b {font-weight:bold;color:#131211}
+  .mp em,.mp var {font-style:italic;color:#232221;text-decoration:none}
+  .mp a,.mp a:link,.mp a:hover,.mp a code,.mp a pre,.mp a tt,.mp a kbd,.mp a samp {color:#0000ff}
+  .mp b.man-ref {font-weight:normal;color:#434241}
+  .mp pre code {font-weight:normal;color:#434241}
+  .mp h2+pre,h3+pre {padding-left:0}
+  ol.man-decor,ol.man-decor li {margin:3px 0 10px 0;padding:0;float:left;width:33%;list-style-type:none;text-transform:uppercase;color:#999;letter-spacing:1px}
+  ol.man-decor {width:100%}
+  ol.man-decor li.tl {text-align:left}
+  ol.man-decor li.tc {text-align:center;letter-spacing:4px}
+  ol.man-decor li.tr {text-align:right;float:right}
+  </style>
+  <style type='text/css' media='all'>
+  /* style: toc */
+  .man-navigation {display:block !important;position:fixed;top:0;left:113ex;height:100%;width:100%;padding:48px 0 0 0;border-left:1px solid #dbdbdb;background:#eee}
+  .man-navigation a,.man-navigation a:hover,.man-navigation a:link,.man-navigation a:visited {display:block;margin:0;padding:5px 2px 5px 30px;color:#999;text-decoration:none}
+  .man-navigation a:hover {color:#111;text-decoration:underline}
+  </style>
+</head>
+<!--
+  The following styles are deprecated and will be removed at some point:
+  div#man, div#man ol.man, div#man ol.head, div#man ol.man.
+
+  The .man-page, .man-decor, .man-head, .man-foot, .man-title, and
+  .man-navigation should be used instead.
+-->
+<body id='manpage'>
+  <div class='mp' id='man'>
+
+  <div class='man-navigation' style='display:none'>
+    <a href="#NAME">NAME</a>
+    <a href="#SYNOPSIS">SYNOPSIS</a>
+    <a href="#DESCRIPTION">DESCRIPTION</a>
+    <a href="#COMMANDS">COMMANDS</a>
+    <a href="#EXAMPLES">EXAMPLES</a>
+    <a href="#BUGS">BUGS</a>
+    <a href="#COPYRIGHT">COPYRIGHT</a>
+    <a href="#SEE-ALSO">SEE ALSO</a>
+  </div>
+
+  <ol class='man-decor man-head man head'>
+    <li class='tl'>bourne-shell-list(1)</li>
+    <li class='tc'>manual</li>
+    <li class='tr'>bourne-shell-list(1)</li>
+  </ol>
+
+  <h2 id="NAME">NAME</h2>
+<p class="man-name">
+  <code>bourne-shell-list</code> - <span class="man-whatis">functional programming in your shell</span>
+</p>
+
+<h2 id="SYNOPSIS">SYNOPSIS</h2>
+
+<p><code>list</code> [item ...] | <code>cmd</code> [arg ...] | ...</p>
+
+<h2 id="DESCRIPTION">DESCRIPTION</h2>
+
+<p><code>bourne-shell-list</code> brings concepts of functional programming into the world of UNIX shells. Lists are first class objects encoded as strings where elements are separated by new lines. Commands can be chained using pipes to build complex expression that you would probably not want to write in imperative shell. Commands taking functions as argument (map, filter, foldleft...) expect the function body as a string where <code>_1</code> and <code>_2</code> are considered to be the first and second argument. If used without index, placeholders are positionally matched arguments.</p>
+
+<h2 id="COMMANDS">COMMANDS</h2>
+
+<p>Command semantics are inspired from methods of scala.collection.immutable.List. Names are lower case to match shell conventions: list, apply, cons, contains, count, drop, dropwhile, exists, filter, filternot, find, fold, foldleft, foldright, forall, head, init, isempty, last, length, map, mkstring, nonempty, reduce, reduceleft, reduceright, reverse, tail, take, takeright, takewhile, updated, zipwithindex.</p>
+
+<dl>
+<dt class="flush"><code>list</code></dt><dd><p>  Constructs a list from arguments
+  <em>() => List[String]</em></p></dd>
+<dt class="flush"><code>apply</code></dt><dd><p>  Selects an element by its index in the list.<br />
+  <em>(Int) => A</em></p></dd>
+<dt class="flush"><code>cons</code></dt><dd><p>  Adds an element at the beginning of this list.<br />
+  <em>(String) => List[String]</em></p></dd>
+<dt class="flush"><code>contains</code></dt><dd><p>  Tests whether this list contains a given value as an element.<br />
+  <em>(String) => Boolean</em></p></dd>
+<dt class="flush"><code>count</code></dt><dd><p>  Counts the number of elements in the list which satisfy a predicate.<br />
+  <em>(String => Boolean) => Int</em></p></dd>
+<dt class="flush"><code>drop</code></dt><dd><p>  Selects all elements except first n ones.<br />
+  <em>(Int) => List[String]</em></p></dd>
+<dt class="flush"><code>dropwhile</code></dt><dd><p>  Drops longest prefix of elements that satisfy a predicate.<br />
+  <em>(String => Boolean) => List[String]</em></p></dd>
+<dt class="flush"><code>exists</code></dt><dd><p>  Tests whether a predicate holds for some of the elements of this list.<br />
+  <em>(String => Boolean) => Boolean</em></p></dd>
+<dt class="flush"><code>filter</code></dt><dd><p>  Selects all elements of this list which satisfy a predicate.<br />
+  <em>(String => Boolean) => List[String]</em></p></dd>
+<dt class="flush"><code>filternot</code></dt><dd><p>  Selects all elements of this list which do not satisfy a predicate.<br />
+  <em>(String => Boolean) => List[String]</em></p></dd>
+<dt class="flush"><code>find</code></dt><dd><p>  Finds the first element of the list satisfying a predicate.<br />
+  <em>(String => Boolean) => String</em></p></dd>
+<dt class="flush"><code>fold</code></dt><dd><p>  Folds the elements of this list using the specified associative binary operator.<br />
+  <em>(String, (String, String) => String) => String</em></p></dd>
+<dt class="flush"><code>foldleft</code></dt><dd><p>  Applies a binary operator to a start value and all elements of this list, going left to right.<br />
+  <em>(String, (String, String) => String) => String</em></p></dd>
+<dt class="flush"><code>foldright</code></dt><dd><p>  Applies a binary operator to all elements of this list and a start value, going right to left.<br />
+  <em>(String, (String, String) => String) => String</em></p></dd>
+<dt class="flush"><code>forall</code></dt><dd><p>  Tests whether a predicate holds for all elements of this list.<br />
+  <em>(String => Boolean) => Boolean</em></p></dd>
+<dt class="flush"><code>head</code></dt><dd><p>  Selects the first element of this list. Name conflict.<br />
+  <em>() => String</em></p></dd>
+<dt class="flush"><code>init</code></dt><dd><p>  Selects all elements except the last.<br />
+  <em>() => List[String]</em></p></dd>
+<dt class="flush"><code>isempty</code></dt><dd><p>  Tests whether the list is empty.<br />
+  <em>() => Boolean</em></p></dd>
+<dt class="flush"><code>last</code></dt><dd><p>  Selects the last element. Name conflict.<br />
+  <em>() => String</em></p></dd>
+<dt class="flush"><code>length</code></dt><dd><p>  The length of the list.<br />
+  <em>() => Int</em></p></dd>
+<dt class="flush"><code>map</code></dt><dd><p>  Builds a new collection by applying a function to all elements of this list.
+  <em>(String => String) => String</em></p></dd>
+<dt class="flush"><code>mkstring</code></dt><dd><p>  Displays all elements of this list in a string using a separator string.<br />
+  <em>(String) => String</em></p></dd>
+<dt class="flush"><code>nonempty</code></dt><dd><p>  Tests whether the list is not empty.<br />
+  <em>() => Boolean</em></p></dd>
+<dt class="flush"><code>reduce</code></dt><dd><p>  Reduces the elements of this list using the specified associative binary operator.<br />
+  <em>((String, String) => String) => String</em></p></dd>
+<dt class="flush"><code>reduceleft</code></dt><dd><p>  Applies a binary operator to all elements of this list, going left to right.<br />
+  <em>((String, String) => String) => String</em></p></dd>
+<dt class="flush"><code>reduceright</code></dt><dd><p>  Applies a binary operator to all elements of this list, going right to left.<br />
+  <em>((String, String) => String) => String</em></p></dd>
+<dt class="flush"><code>reverse</code></dt><dd><p>  Returns new list with elements in reversed order.<br />
+  <em>() => List[String]</em></p></dd>
+<dt class="flush"><code>tail</code></dt><dd><p>  Selects all elements except the first. Name conflict.<br />
+  <em>() => List[String]</em></p></dd>
+<dt class="flush"><code>take</code></dt><dd><p>  Selects first n elements.<br />
+  <em>(Int) => List[String]</em></p></dd>
+<dt class="flush"><code>takeright</code></dt><dd><p>  Selects last n elements.<br />
+  <em>(Int) => List[String]</em></p></dd>
+<dt class="flush"><code>takewhile</code></dt><dd><p>  Takes longest prefix of elements that satisfy a predicate.<br />
+  <em>(String => Boolean) => List[String]</em></p></dd>
+<dt class="flush"><code>updated</code></dt><dd><p>  A copy of this list with one single replaced element.<br />
+  <em>(Int, String) => List[String]</em></p></dd>
+<dt class="flush"><code>zipwithindex</code></dt><dd><p>  Zips this list with its indices.<br />
+  <em>() => List[(Int, String)]</em></p></dd>
+</dl>
+
+
+<h2 id="EXAMPLES">EXAMPLES</h2>
+
+<ol>
+<li><p>Create files test1.txt, test2.txt, ..., test100.txt:</p>
+
+<pre><code>seq 1 100 | map touch test_.txt
+</code></pre></li>
+<li><p>Compute 34 / (56 / (12 / (4 / (23 / 7)))):</p>
+
+<pre><code>list 34 56 12 4 23 | foldright 7 expr _ / _
+</code></pre></li>
+<li><p>Print lines whose length is a multiple of 5:</p>
+
+<pre><code>cat file.txt | filter 'test $((${#_} % 5)) = 0'
+</code></pre></li>
+<li><p>Recursive quicksort algorithm:</p>
+
+<pre><code>quicksort() {
+  a=$(cat)
+  l=$(list $a | length)
+  if [ 2 -gt $l ]; then
+    list $a
+  else
+    pivot=$(list $a | apply $(($l / 2)))
+    list $a | filter [ _ -lt $pivot ] | quicksort | cat
+    list $a | filter [ _ -eq $pivot ]
+    list $a | filter [ _ -gt $pivot ] | quicksort
+  fi
+}
+</code></pre></li>
+</ol>
+
+
+<h2 id="BUGS">BUGS</h2>
+
+<p>Report bugs on <a href="https://github.com/OlivierBlanvillain/bourne-shell-list">GitHub</a> or by e-mail to <strong>olivier.blanvillain@gmail.com</strong>.</p>
+
+<h2 id="COPYRIGHT">COPYRIGHT</h2>
+
+<p>(c) 2014 Olivier Blanvillain</p>
+
+<p><strong>bourne-shell-list</strong> is licenced under the MIT open-source licence.</p>
+
+<h2 id="SEE-ALSO">SEE ALSO</h2>
+
+<p><a class="man-ref" href="man.html">bourne-shell-list<span class="s">(1)</span></a>, <a href="http://www.scala-lang.org/">scala(1)</a>, <a href="">sh(1)</a></p>
+
+
+  <ol class='man-decor man-foot man foot'>
+    <li class='tl'>BOURNE-SHELL-LIST(1)</li>
+    <li class='tc'>January 2014</li>
+    <li class='tr'>bourne-shell-list(1)</li>
+  </ol>
+
+  </div>
+</body>
+</html>
