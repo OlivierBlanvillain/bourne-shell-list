@@ -2,7 +2,7 @@
 . test/test-framework.sh
 
 testing 'lib/list.sh'
-withfallbackfor 'wc tac'
+withfallbackfor 'wc tac head tail'
 onshells 'posh dash ash bash ksh mksh pdksh zsh'
 
 check 'list "a a" "b b" | mkstring ,' 'a a,b b'

@@ -7,7 +7,7 @@ bourne-shell-list(1) - functional programming in your shell
 
 ## DESCRIPTION
 
-`bourne-shell-list` brings concepts of functional programming into the world of UNIX shells. Lists are first class objects encoded as strings where elements are separated by new lines. Commands can be chained using pipes to build complex expression that you would probably not want to write in imperative shell. Commands taking functions as argument (map, filter, foldleft ...) expect the function body as a string where `_1` and `_2` are considered to be the first and second argument. If used without index, `_` are positionally matched arguments.
+`bourne-shell-list` brings concepts of functional programming into the world of UNIX shells. Lists are first class objects encoded as strings where elements are separated by new lines. Commands can be chained using pipes to build complex expression that you would probably not want to write in imperative shell. Commands taking functions as argument (map, filter, foldleft ...) expect the function body as a string where `_1` and `_2` are considered to be the first and second argument. If used without index, placeholders are positionally matched arguments.
 
 ## COMMANDS
 
@@ -158,7 +158,7 @@ Command semantics are inspired from methods of scala.collection.immutable.List. 
 
 3. Print lines whose length is a multiple of 5:
 
-    cat file.txt | filter 'test $(expr ${#_} % 5) = 0'
+    cat file.txt | filter 'test $((${#_} % 5)) = 0'
 
 ## BUGS
 
