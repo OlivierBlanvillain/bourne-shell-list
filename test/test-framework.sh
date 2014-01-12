@@ -21,19 +21,23 @@
 # dlrow hello
 # Got:
 # dlrow olleh
-# ============= 1 failed, 1 passed =============
+# ===================== 1 failed, 1 passed in 0.2 seconds =====================
 
 # See http://www.gnu.org/software/make/manual/html_node/Utilities-in-Makefiles
 # for a list of utilities usable when writing portable code.
 
 trap printresult 0
 
+_date_in_centisecond() {
+  echo $(($(date +'%s * 1000 + %-N / 1000000'))) | sed 's/.$//'
+}
+
 NONE='\033[00m'
 BOLD='\033[1m'
 RED='\033[01;31m'
 GREEN='\033[01;32m'
 shells='sh'
-
+startat=$(_date_in_centisecond)
 
 testing() {
   target=". ./$@;"
@@ -87,14 +91,17 @@ $got"
 }
 
 printresult() {
+  deltat=$(($(_date_in_centisecond) - $startat))
   linewidth=$(stty size | awk '{ print $2 }')
   if [ $failed = 0 ]; then
-    message=" $passed passed "
+    failedmessage=""
     echo -n $GREEN
   else
-    message=" $failed failed, $passed passed "
+    failedmessage=" $failed failed,"
     echo -n $RED
   fi
+  duration="$(($deltat / 100)).$(($deltat % 100))" 
+  message="$failedmessage $passed passed in $duration seconds "
   nequals="$(seq 1 $((($linewidth - $(expr length "$message")) / 2)))"
   echo -n $BOLD
   for i in $nequals; do echo -n =; done
