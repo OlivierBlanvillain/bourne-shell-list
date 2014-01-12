@@ -7,7 +7,7 @@ bourne-shell-list(1) - functional programming in your shell
 
 ## DESCRIPTION
 
-`bourne-shell-list` brings concepts of functional programming into the world of UNIX shells. Lists are first class objects encoded as strings where elements are separated by new lines. Commands can be chained using pipes to build complex expression that you would probably not want to write in imperative shell. Commands taking functions as argument (map, filter, foldleft ...) expect the function body as a string where `_1` and `_2` are considered to be the first and second argument. If used without index, placeholders are positionally matched arguments.
+`bourne-shell-list` brings concepts of functional programming into the world of UNIX shells. Lists are first class objects encoded as strings where elements are separated by new lines. Commands can be chained using pipes to build complex expression that you would probably not want to write in imperative shell. Commands taking functions as argument (map, filter, foldleft...) expect the function body as a string where `_1` and `_2` are considered to be the first and second argument. If used without index, placeholders are positionally matched arguments.
 
 ## COMMANDS
 
@@ -23,7 +23,7 @@ Command semantics are inspired from methods of scala.collection.immutable.List. 
     *(Int) => A*
 
 - `cons`:
-    Adds an element at the beginning of this list.
+    Adds an element at the beginning of this list.  
     *(String) => List[String]*
     
 - `contains`:
@@ -67,7 +67,7 @@ Command semantics are inspired from methods of scala.collection.immutable.List. 
     *(String, (String, String) => String) => String*
 
 - `foldright`:
-    Applies a binary operator to all elements of this list and a start value, going right to left.
+    Applies a binary operator to all elements of this list and a start value, going right to left.  
     *(String, (String, String) => String) => String*
 
 - `forall`:
@@ -75,7 +75,7 @@ Command semantics are inspired from methods of scala.collection.immutable.List. 
     *(String => Boolean) => Boolean*
 
 - `head`:
-    Selects the first element of this list. Name conflict!  
+    Selects the first element of this list. Name conflict.  
     *() => String*
 
 - `init`:
@@ -87,7 +87,7 @@ Command semantics are inspired from methods of scala.collection.immutable.List. 
     *() => Boolean*
 
 - `last`:
-    Selects the last element. Name conflict!  
+    Selects the last element. Name conflict.  
     *() => String*
 
 - `length`:
@@ -107,16 +107,15 @@ Command semantics are inspired from methods of scala.collection.immutable.List. 
     *() => Boolean*
 
 - `reduce`:
-    Reduces the elements of this list using the specified associative binary operator.
+    Reduces the elements of this list using the specified associative binary operator.  
     *((String, String) => String) => String*
 
 - `reduceleft`:
-    Applies a binary operator to all elements of this list going left to right.
+    Applies a binary operator to all elements of this list, going left to right.  
     *((String, String) => String) => String*
 
 - `reduceright`:
-    Applies a binary operator to all elements of this list, going right to
-    left.  
+    Applies a binary operator to all elements of this list, going right to left.  
     *((String, String) => String) => String*
 
 - `reverse`:
@@ -124,7 +123,7 @@ Command semantics are inspired from methods of scala.collection.immutable.List. 
     *() => List[String]*
 
 - `tail`:
-    Selects all elements except the first. Name conflict!  
+    Selects all elements except the first. Name conflict.  
     *() => List[String]*
 
 - `take`:
@@ -150,16 +149,31 @@ Command semantics are inspired from methods of scala.collection.immutable.List. 
 ## EXAMPLES
 1. Create files test1.txt, test2.txt, ..., test100.txt:  
   
-    seq 1 100 | map touch test_.txt
+       seq 1 100 | map touch test_.txt
 
 2. Compute 34 / (56 / (12 / (4 / (23 / 7)))):
 
-    list 34 56 12 4 23 | foldright 7 expr _ / _
+       list 34 56 12 4 23 | foldright 7 expr _ / _
 
 3. Print lines whose length is a multiple of 5:
 
-    cat file.txt | filter 'test $((${#_} % 5)) = 0'
+       cat file.txt | filter 'test $((${#_} % 5)) = 0'
 
+4. Recursive quicksort algorithm
+
+       sort() {
+         a=$(cat)
+         l=$(list $a | length)
+         if [ 2 -gt $l ]; then
+           list $a
+         else
+           pivot=$(list $a | apply $(($l / 2)))
+           list $a | filter [ _ -lt $pivot ] | sort | cat
+           list $a | filter [ _ -eq $pivot ]
+           list $a | filter [ _ -gt $pivot ] | sort
+         fi
+       }
+    
 ## BUGS
 
 Report bugs on [GitHub](https://github.com/OlivierBlanvillain/bourne-shell-list) or by e-mail to **olivier.blanvillain@gmail.com**. 
