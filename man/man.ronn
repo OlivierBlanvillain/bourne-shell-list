@@ -1,0 +1,169 @@
+bourne-shell-list(1) - functional programming in your shell
+===========================================================
+
+
+## SYNOPSIS
+
+  `list` [item ...] | opp args [opp args ...]
+
+## DESCRIPTION
+
+## COMMANDS
+
+Commands are inspired from scala.collection.immutable.List. Names are lower case to match shell conventions: list, apply, contains, count, drop, dropwhile, exists, filter, filternot, find, fold, foldleft, foldright, forall, head, init, isempty, last, length, map, mkstring, nonempty, reduce, reduceleft, reduceright, reverse, tail, take, takeright, takewhile, updated, zipwithindex.
+
+- `list`:
+    Constructs a list from arguments  
+    *() => List[String]*
+
+- `apply`:
+    Selects an element by its index in the list.  
+    *(Int) => A*
+
+- `contains`:
+    Tests whether this list contains a given value as an element.  
+    *(String) => Boolean*
+
+- `count`:
+    Counts the number of elements in the list which satisfy a predicate.  
+    *(String => Boolean) => Int*
+
+- `drop`:
+    Selects all elements except first n ones.  
+    *(Int) => List[String]*
+
+- `dropwhile`:
+    Drops longest prefix of elements that satisfy a predicate.  
+    *(String => Boolean) => List[String]*
+
+- `exists`:
+    Tests whether a predicate holds for some of the elements of this list.  
+    *(String => Boolean) => Boolean*
+
+- `filter`:
+    Selects all elements of this list which satisfy a predicate.  
+    *(String => Boolean) => List[String]*
+
+- `filternot`:
+    Selects all elements of this list which do not satisfy a predicate.  
+    *(String => Boolean) => List[String]*
+
+- `find`:
+    Finds the first element of the list satisfying a predicate.  
+    *(String => Boolean) => String*
+
+- `fold`:
+    Folds the elements of this list using the specified associative binary operator.
+    *(String, (String, String) => String) => String*
+
+- `foldleft`:
+    Applies a binary operator to a start value and all elements of this list, going left to right.
+    *(String, (String, String) => String) => String*
+
+- `foldright`:
+    Applies a binary operator to all elements of this list and a start value, going right to left.
+    *(String, (String, String) => String) => String*
+
+- `forall`:
+    Tests whether a predicate holds for all elements of this list.  
+    *(String => Boolean) => Boolean*
+
+- `head`:
+    Selects the first element of this list. Name conflict!  
+    *() => String*
+
+- `init`:
+    Selects all elements except the last.  
+    *() => List[String]*
+
+- `isempty`:
+    Tests whether the list is empty.  
+    *() => Boolean*
+
+- `last`:
+    Selects the last element. Name conflict!  
+    *() => String*
+
+- `length`:
+    The length of the list.  
+    *() => Int*
+
+- `map`:
+    Builds a new collection by applying a function to all elements of this list.
+    *(String => String) => String*
+
+- `mkstring`:
+    Displays all elements of this list in a string using a separator string.  
+    *(String) => String*
+
+- `nonempty`:
+    Tests whether the list is not empty.  
+    *() => Boolean*
+
+- `reduce`:
+    Reduces the elements of this list using the specified associative binary operator.
+    *((String, String) => String) => String*
+
+- `reduceleft`:
+    Applies a binary operator to all elements of this list going left to right.
+    *((String, String) => String) => String*
+
+- `reduceright`:
+    Applies a binary operator to all elements of this list, going right to
+    left.  
+    *((String, String) => String) => String*
+
+- `reverse`:
+    Returns new list with elements in reversed order.  
+    *() => List[String]*
+
+- `tail`:
+    Selects all elements except the first. Name conflict!  
+    *() => List[String]*
+
+- `take`:
+    Selects first n elements.  
+    *(Int) => List[String]*
+
+- `takeright`:
+    Selects last n elements.  
+    *(Int) => List[String]*
+
+- `takewhile`:
+    Takes longest prefix of elements that satisfy a predicate.  
+    *(String => Boolean) => List[String]*
+
+- `updated`:
+    A copy of this list with one single replaced element.  
+    *(Int, String) => List[String]*
+
+- `zipwithindex`:
+    Zips this list with its indices.  
+    *() => List[(Int, String)]*
+
+## EXAMPLES
+1. Create files test1.txt, test2.txt, ..., test100.txt:  
+  
+    seq 1 100 | map touch test_.txt
+
+2. Compute 34 / (56 / (12 / (4 / (23 / 7)))):
+
+    list 34 56 12 4 23 | foldright 7 expr _ / _
+
+3. Print lines whose length is a multiple of 5:
+
+    cat file.txt | filter 'test $(expr ${#_} % 5) = 0'
+
+## BUGS
+
+Report bugs on [GitHub](https://github.com/OlivierBlanvillain/bourne-shell-list) or by e-mail to **olivier.blanvillain@gmail.com**. 
+
+## COPYRIGHT
+
+(c) 2014 Olivier Blanvillain
+
+**bourne-shell-list** is licenced under the MIT open-source licence.
+
+## SEE ALSO
+
+bourne-shell-list(1), [scala(1)](http://www.scala-lang.org/), [sh(1)]()

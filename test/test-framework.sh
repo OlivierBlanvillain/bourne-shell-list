@@ -1,3 +1,5 @@
+# Shell script test framework. Usage:
+
 # $ cat mycode.sh
 # fun() {
 #   echo hello $@ | (rev 2>/dev/null || sed '
@@ -21,10 +23,8 @@
 # dlrow olleh
 # ============= 1 failed, 1 passed =============
 
-# The following utilities are safe (should not be in withfallbackfor):
-# awk cat cmp cp diff echo egrep expr false grep install-info ln ls
-# mkdir mv printf pwd rm rmdir sed sleep sort tar test touch tr true
-# http://www.gnu.org/software/make/manual/html_node/Utilities-in-Makefiles
+# See http://www.gnu.org/software/make/manual/html_node/Utilities-in-Makefiles
+# for a list of utilities usable when writing portable code.
 
 trap printresult 0
 
@@ -33,8 +33,7 @@ BOLD='\033[1m'
 RED='\033[01;31m'
 GREEN='\033[01;32m'
 shells='sh'
-passed=0
-failed=0
+
 
 testing() {
   target=". ./$@;"
@@ -54,6 +53,9 @@ withfallbackfor() {
     "
   done
 }
+
+passed=0
+failed=0
 
 check() {
   runing=$1
@@ -84,14 +86,6 @@ $got"
   passed=$(expr 1 + $passed)
 }
 
-checktrue() {
-  check "$1 && echo true || echo false" "true"
-}
-
-checkfalse() {
-  check "$1 && echo true || echo false" "false"
-}
-
 printresult() {
   linewidth=$(stty size | awk '{ print $2 }')
   if [ $failed = 0 ]; then
@@ -107,4 +101,12 @@ printresult() {
   echo -n "$message"
   for i in $nequals; do echo -n =; done
   echo $NONE
+}
+
+checktrue() {
+  check "$1 && echo true || echo false" "true"
+}
+
+checkfalse() {
+  check "$1 && echo true || echo false" "false"
 }
