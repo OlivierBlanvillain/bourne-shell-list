@@ -8,9 +8,9 @@
 
 # $ cat mytests.sh
 # . ./test-framework.sh
-# testing 'mycode.sh'
-# withfallbackfor 'rev'
-# onshells 'posh bash zsh'
+# testing mycode.sh
+# withfallbackfor rev
+# onshells posh bash zsh
 # check 'fun world' 'dlrow hello'
 # check 'fun world' 'dlrow olleh'
 

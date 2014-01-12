@@ -1,5 +1,5 @@
-_tail=$(which tail)
-_head=$(which head)
+_tail=$(which tail 2>/dev/null)
+_head=$(which head 2>/dev/null)
 
 list() {
   if [ $# -eq 1 ]; then

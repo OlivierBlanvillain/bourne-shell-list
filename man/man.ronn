@@ -14,8 +14,7 @@ bourne-shell-list(1) - functional programming in your shell
 Command semantics are inspired from methods of scala.collection.immutable.List. Names are lower case to match shell conventions: list, apply, cons, contains, count, drop, dropwhile, exists, filter, filternot, find, fold, foldleft, foldright, forall, head, init, isempty, last, length, map, mkstring, nonempty, reduce, reduceleft, reduceright, reverse, tail, take, takeright, takewhile, updated, zipwithindex.
 
 - `list`:
-    Constr  
-    ucts a list from arguments  
+    Constructs a list from arguments
     *() => List[String]*
 
 - `apply`:
@@ -159,18 +158,18 @@ Command semantics are inspired from methods of scala.collection.immutable.List. 
 
        cat file.txt | filter 'test $((${#_} % 5)) = 0'
 
-4. Recursive quicksort algorithm
+4. Recursive quicksort algorithm:
 
-       sort() {
+       quicksort() {
          a=$(cat)
          l=$(list $a | length)
          if [ 2 -gt $l ]; then
            list $a
          else
            pivot=$(list $a | apply $(($l / 2)))
-           list $a | filter [ _ -lt $pivot ] | sort | cat
+           list $a | filter [ _ -lt $pivot ] | quicksort | cat
            list $a | filter [ _ -eq $pivot ]
-           list $a | filter [ _ -gt $pivot ] | sort
+           list $a | filter [ _ -gt $pivot ] | quicksort
          fi
        }
     

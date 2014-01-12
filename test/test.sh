@@ -56,17 +56,17 @@ check 'list 34 56 12 4 23 7 | reduceright expr _1 / _2' '8'
 check 'list 34 56 12 4 23 7 | reduceright expr _ / _' '8'
 
 check '
-sort() {
+quicksort() {
   a=$(cat)
   l=$(list $a | length)
   if [ 2 -gt $l ]; then
     list $a
   else
     pivot=$(list $a | apply $(($l / 2)))
-    list $a | filter [ _ -lt $pivot ] | sort | cat
+    list $a | filter [ _ -lt $pivot ] | quicksort | cat
     list $a | filter [ _ -eq $pivot ]
-    list $a | filter [ _ -gt $pivot ] | sort
+    list $a | filter [ _ -gt $pivot ] | quicksort
   fi
 }
-echo 3 81 76 49 33 58 90 6 100 33 87 48 11 16 21 34 | sort | mkstring
+echo 3 81 76 49 33 58 90 6 100 33 87 48 11 16 21 34 | quicksort | mkstring
 ' '3 6 11 16 21 33 33 34 48 49 58 76 81 87 90 100'
