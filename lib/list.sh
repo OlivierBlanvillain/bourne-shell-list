@@ -13,6 +13,12 @@ apply() {
   echo "$x"
 }
 
+# def cons(x: String): List[String]
+cons() {
+  echo "$@"
+  cat
+}
+
 # def contains(elem: String): Boolean
 contains() {
   while read x; do

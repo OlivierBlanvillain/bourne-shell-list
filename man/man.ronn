@@ -1,25 +1,31 @@
 bourne-shell-list(1) - functional programming in your shell
 ===========================================================
 
-
 ## SYNOPSIS
 
-  `list` [item ...] | opp args [opp args ...]
+`list` [item ...] | `cmd` [arg ...] | ...
 
 ## DESCRIPTION
 
+`bourne-shell-list` brings concepts of functional programming into the world of UNIX shells. Lists are first class objects encoded as strings where elements are separated by new lines. Commands can be chained using pipes to build complex expression that you would probably not want to write in imperative shell. Commands taking functions as argument (map, filter, foldleft ...) expect the function body as a string where `_1` and `_2` are considered to be the first and second argument. If used without index, `_` are positionally matched arguments.
+
 ## COMMANDS
 
-Commands are inspired from scala.collection.immutable.List. Names are lower case to match shell conventions: list, apply, contains, count, drop, dropwhile, exists, filter, filternot, find, fold, foldleft, foldright, forall, head, init, isempty, last, length, map, mkstring, nonempty, reduce, reduceleft, reduceright, reverse, tail, take, takeright, takewhile, updated, zipwithindex.
+Command semantics are inspired from methods of scala.collection.immutable.List. Names are lower case to match shell conventions: list, apply, cons, contains, count, drop, dropwhile, exists, filter, filternot, find, fold, foldleft, foldright, forall, head, init, isempty, last, length, map, mkstring, nonempty, reduce, reduceleft, reduceright, reverse, tail, take, takeright, takewhile, updated, zipwithindex.
 
 - `list`:
-    Constructs a list from arguments  
+    Constr  
+    ucts a list from arguments  
     *() => List[String]*
 
 - `apply`:
     Selects an element by its index in the list.  
     *(Int) => A*
 
+- `cons`:
+    Adds an element at the beginning of this list.
+    *(String) => List[String]*
+    
 - `contains`:
     Tests whether this list contains a given value as an element.  
     *(String) => Boolean*
@@ -53,11 +59,11 @@ Commands are inspired from scala.collection.immutable.List. Names are lower case
     *(String => Boolean) => String*
 
 - `fold`:
-    Folds the elements of this list using the specified associative binary operator.
+    Folds the elements of this list using the specified associative binary operator.  
     *(String, (String, String) => String) => String*
 
 - `foldleft`:
-    Applies a binary operator to a start value and all elements of this list, going left to right.
+    Applies a binary operator to a start value and all elements of this list, going left to right.  
     *(String, (String, String) => String) => String*
 
 - `foldright`:
