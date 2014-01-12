@@ -9,7 +9,7 @@
         list $a
       else
         pivot=$(list $a | apply $(($l / 2)))
-        list $a | filter [ _ -lt $pivot ] | quicksort
+        list $a | filter [ _ -lt $pivot ] | quicksort | cat
         list $a | filter [ _ -eq $pivot ]
         list $a | filter [ _ -gt $pivot ] | quicksort
       fi
@@ -19,17 +19,17 @@ See [the manual][2] for the complete list of commands and additional examples. T
 
 ### Install:
 
-Download `lib/list.sh` and source it in your `~/.whatevershrc`.  
-Quick-and-dirty: `. <(curl -fsL http://goo.gl/HURgOQ)`
+Download `list.sh` and source it in your `~/.whatevershrc`.  
+Quick-and-dirty: `. <(curl -fsL http://goo.gl/cIDiZ7)`
 
 ### Run the tests:
     
-    test/test.sh
+    sh test.sh
     
 ### Compile the manual:
 
     gem install ronn
-    ronn --style=toc --html man/man.ronn --pipe > index.html
+    ronn --style=toc --html -/man.ronn --pipe > index.html
 
 [1]: http://www.scala-lang.org/api/current/index.html#scala.collection.immutable.List
 [2]: http://olivierblanvillain.github.io/bourne-shell-list/

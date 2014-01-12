@@ -1,7 +1,6 @@
-#!/bin/sh
-. test/test-framework.sh
+. ./test-framework.sh
 
-testing lib/list.sh
+testing ./list.sh
 withfallbackfor wc tac head tail
 onshells dash posh ash bash mksh pdksh ksh zsh   
 
