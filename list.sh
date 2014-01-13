@@ -1,5 +1,7 @@
-_tail=$(which tail 2>/dev/null)
 _head=$(which head 2>/dev/null)
+_last=$(which last 2>/dev/null)
+_tail=$(which tail 2>/dev/null)
+_zip=$(which zip 2>/dev/null)
 
 list() {
   if [ $# -eq 1 ]; then
@@ -196,6 +198,17 @@ updated() {
   done
   read x
   echo "$2"
+  cat
+}
+
+zip() {
+  for y in "$@"; do
+    if read x; then
+      echo "$x $y"
+    else
+      echo "$y"
+    fi
+  done
   cat
 }
 

@@ -89,7 +89,7 @@
 
 <h2 id="COMMANDS">COMMANDS</h2>
 
-<p>Command semantics are inspired from methods of scala.collection.immutable.List. Names are lower case to match shell conventions: list, apply, cons, contains, count, drop, dropwhile, exists, filter, filternot, find, fold, foldleft, foldright, forall, head, init, isempty, last, length, map, mkstring, nonempty, reduce, reduceleft, reduceright, reverse, tail, take, takeright, takewhile, updated, zipwithindex.</p>
+<p>Command semantics are inspired from methods of scala.collection.immutable.List. Names are lower case to match shell conventions: list, apply, cons, contains, count, drop, dropwhile, exists, filter, filternot, find, fold, foldleft, foldright, forall, head, init, isempty, last, length, map, mkstring, nonempty, reduce, reduceleft, reduceright, reverse, tail, take, takeright, takewhile, updated, zip, zipwithindex.</p>
 
 <dl>
 <dt class="flush"><code>list</code></dt><dd><p>  Constructs a list from arguments.<br />
@@ -156,6 +156,8 @@
   <em>(String => Boolean) => List[String]</em></p></dd>
 <dt class="flush"><code>updated</code></dt><dd><p>  A copy of this list with one single replaced element.<br />
   <em>(Int, String) => List[String]</em></p></dd>
+<dt class="flush"><code>zip</code></dt><dd><p>  Returns a list formed from this list and another list by combining corresponding elements in pairs.<br />
+  <em>(List[String]) => List[(String, String)]</em></p></dd>
 <dt class="flush"><code>zipwithindex</code></dt><dd><p>  Zips this list with its indices.<br />
   <em>() => List[(Int, String)]</em></p></dd>
 </dl>

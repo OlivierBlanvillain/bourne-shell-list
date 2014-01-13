@@ -53,6 +53,9 @@ check 'list 7 34 56 12 4 23 | reduceleft expr _ / _' '0'
 check 'list 7 34 56 12 4 23 | reduce expr _ / _' '0'
 check 'list 34 56 12 4 23 7 | reduceright expr _1 / _2' '8'
 check 'list 34 56 12 4 23 7 | reduceright expr _ / _' '8'
+check 'list 1 2 3 | zip $(list a b c) | mkstring ", "' '1 a, 2 b, 3 c'
+check 'list 1 2 3 | zip $(list a b) | mkstring ", "' '1 a, 2 b, 3'
+check 'list 1 2 | zip $(list a b c) | mkstring ", "' '1 a, 2 b, c'
 
 check '
 quicksort() {
@@ -69,3 +72,4 @@ quicksort() {
 }
 echo 3 81 76 49 33 58 90 6 100 33 87 48 11 16 21 34 | quicksort | mkstring
 ' '3 6 11 16 21 33 33 34 48 49 58 76 81 87 90 100'
+c
