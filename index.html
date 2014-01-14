@@ -89,23 +89,33 @@
 
 <h2 id="COMMANDS">COMMANDS</h2>
 
-<p>Command semantics are inspired from methods of scala.collection.immutable.List. Names are lower case to match shell conventions: list, apply, cons, contains, count, drop, dropwhile, exists, filter, filternot, find, fold, foldleft, foldright, forall, head, init, isempty, last, length, map, mkstring, nonempty, reduce, reduceleft, reduceright, reverse, tail, take, takeright, takewhile, updated, zip, zipwithindex.</p>
+<p>Command semantics are inspired from methods of scala.collection.immutable.List. Names are lower case to match shell conventions: append, apply, cons, contains, count, diff, distinct, drop, dropright, dropwhile, endswith, equals, exists, filter, filternot, find, flatmap, flatten, fold, foldleft, foldright, forall, head, indexof, indexwhere, indices, init, intersect, isdefinedat, isempty, last, lastindexof, lastindexwhere, length, list, map, max, maxby, min, minby, mkstring, nonempty, padto, prefixlength, reduce, reduceleft, reduceright, reverse, sameelements, slice, sortby, sorted, tail, take, takeright, takewhile, tostring, union, updated, zip, zipwithindex.</p>
 
 <dl>
-<dt class="flush"><code>list</code></dt><dd><p>  Constructs a list from arguments.<br />
-  <em>() => List[String]</em></p></dd>
+<dt class="flush"><code>append</code></dt><dd><p>  Returns a new list containing the elements from the left hand operand followed by the elements from the right hand operand.<br />
+  <em>(List[String]) => List[String]</em></p></dd>
 <dt class="flush"><code>apply</code></dt><dd><p>  Selects an element by its index in the list.<br />
-  <em>(Int) => A</em></p></dd>
+  <em>(Int) => String</em></p></dd>
 <dt class="flush"><code>cons</code></dt><dd><p>  Adds an element at the beginning of this list.<br />
   <em>(String) => List[String]</em></p></dd>
 <dt class="flush"><code>contains</code></dt><dd><p>  Tests whether this list contains a given value as an element.<br />
   <em>(String) => Boolean</em></p></dd>
 <dt class="flush"><code>count</code></dt><dd><p>  Counts the number of elements in the list which satisfy a predicate.<br />
   <em>(String => Boolean) => Int</em></p></dd>
+<dt class="flush"><code>diff</code></dt><dd><p>  Computes the multiset difference between this list and another list. Name conflict.<br />
+  <em>(List[String]) => List[String]</em></p></dd>
+<dt class="flush"><code>distinct</code></dt><dd><p>  Builds a new list from this list without any duplicate elements.<br />
+  <em>() => List[String]</em></p></dd>
 <dt class="flush"><code>drop</code></dt><dd><p>  Selects all elements except first n ones.<br />
+  <em>(Int) => List[String]</em></p></dd>
+<dt class="flush"><code>dropright</code></dt><dd><p>  Selects all elements except last n ones.<br />
   <em>(Int) => List[String]</em></p></dd>
 <dt class="flush"><code>dropwhile</code></dt><dd><p>  Drops longest prefix of elements that satisfy a predicate.<br />
   <em>(String => Boolean) => List[String]</em></p></dd>
+<dt class="flush"><code>endswith</code></dt><dd><p>  Tests whether this list ends with the given list.<br />
+  <em>(List[String]) => Boolean</em></p></dd>
+<dt class="flush"><code>equals</code></dt><dd><p>  Tests whether this list has the the same elements than the given in the same order.<br />
+  <em>(List[String]) => Boolean</em></p></dd>
 <dt class="flush"><code>exists</code></dt><dd><p>  Tests whether a predicate holds for some of the elements of this list.<br />
   <em>(String => Boolean) => Boolean</em></p></dd>
 <dt class="flush"><code>filter</code></dt><dd><p>  Selects all elements of this list which satisfy a predicate.<br />
@@ -114,6 +124,10 @@
   <em>(String => Boolean) => List[String]</em></p></dd>
 <dt class="flush"><code>find</code></dt><dd><p>  Finds the first element of the list satisfying a predicate.<br />
   <em>(String => Boolean) => String</em></p></dd>
+<dt class="flush"><code>flatmap</code></dt><dd><p>  Builds a new collection by applying a function to all elements of this list and using the elements of the resulting collections.<br />
+  <em>(String => List[String]) => List[String]</em></p></dd>
+<dt class="flush"><code>flatten</code></dt><dd><p>  Converts this list of traversable collections into a list formed by the elements of these traversable collections.<br />
+  <em>() => List[String]</em></p></dd>
 <dt class="flush"><code>fold</code></dt><dd><p>  Folds the elements of this list using the specified associative binary operator.<br />
   <em>(String, (String, String) => String) => String</em></p></dd>
 <dt class="flush"><code>foldleft</code></dt><dd><p>  Applies a binary operator to a start value and all elements of this list, going left to right.<br />
@@ -124,20 +138,48 @@
   <em>(String => Boolean) => Boolean</em></p></dd>
 <dt class="flush"><code>head</code></dt><dd><p>  Selects the first element of this list. Name conflict.<br />
   <em>() => String</em></p></dd>
+<dt class="flush"><code>indexof</code></dt><dd><p>  Finds index of first occurrence of some value in this list.<br />
+  <em>(String) => Int</em></p></dd>
+<dt class="flush"><code>indexwhere</code></dt><dd><p>  Finds index of the first element satisfying some predicate after or at some start index.<br />
+  <em>(String => Boolean, Int) => Int</em></p></dd>
+<dt class="flush"><code>indices</code></dt><dd><p>  Produces the range of all indices of this list.<br />
+  <em>() => List[Int]</em></p></dd>
 <dt class="flush"><code>init</code></dt><dd><p>  Selects all elements except the last.<br />
   <em>() => List[String]</em></p></dd>
+<dt class="flush"><code>intersect</code></dt><dd><p>  Computes the multiset intersection between this list and another list.<br />
+  <em>(List[String]) => List[String]</em></p></dd>
+<dt class="flush"><code>isdefinedat</code></dt><dd><p>  Tests whether this list contains given index.<br />
+  <em>(Int) => Boolean</em></p></dd>
 <dt class="flush"><code>isempty</code></dt><dd><p>  Tests whether the list is empty.<br />
   <em>() => Boolean</em></p></dd>
 <dt class="flush"><code>last</code></dt><dd><p>  Selects the last element. Name conflict.<br />
   <em>() => String</em></p></dd>
+<dt class="flush"><code>lastindexof</code></dt><dd><p>  Finds index of last occurrence of some value in this list before or at a given end index.<br />
+  <em>(String) => Int</em></p></dd>
+<dt><code>lastindexwhere</code></dt><dd><p>  Finds index of last element satisfying some predicate before or at given end index.<br />
+  <em>(String => Boolean) => Int</em></p></dd>
 <dt class="flush"><code>length</code></dt><dd><p>  The length of the list.<br />
   <em>() => Int</em></p></dd>
-<dt class="flush"><code>map</code></dt><dd><p>  Builds a new collection by applying a function to all elements of this list.
+<dt class="flush"><code>list</code></dt><dd><p>  Constructs a list from arguments.<br />
+  <em>() => List[String]</em></p></dd>
+<dt class="flush"><code>map</code></dt><dd><p>  Builds a new collection by applying a function to all elements of this list.<br />
+  <em>(String => String) => List[String]</em></p></dd>
+<dt class="flush"><code>max</code></dt><dd><p>  Finds the largest element.<br />
+  <em>() => String</em></p></dd>
+<dt class="flush"><code>maxby</code></dt><dd><p>  Finds the largest element according to an ordering.<br />
+  <em>(String => String) => String</em></p></dd>
+<dt class="flush"><code>min</code></dt><dd><p>  Finds the smallest element.<br />
+  <em>() => String</em></p></dd>
+<dt class="flush"><code>minby</code></dt><dd><p>  Finds the smallest element according to an ordering.<br />
   <em>(String => String) => String</em></p></dd>
 <dt class="flush"><code>mkstring</code></dt><dd><p>  Displays all elements of this list in a string using a separator string.<br />
   <em>(String) => String</em></p></dd>
 <dt class="flush"><code>nonempty</code></dt><dd><p>  Tests whether the list is not empty.<br />
   <em>() => Boolean</em></p></dd>
+<dt class="flush"><code>padto</code></dt><dd><p>  A copy of this list with an element value appended until a given target length is reached.<br />
+  <em>(Int, String) => List[String]</em></p></dd>
+<dt class="flush"><code>prefixlength</code></dt><dd><p>  Returns the length of the longest prefix whose elements all satisfy some predicate.<br />
+  <em>(String => Boolean) => Int</em></p></dd>
 <dt class="flush"><code>reduce</code></dt><dd><p>  Reduces the elements of this list using the specified associative binary operator.<br />
   <em>((String, String) => String) => String</em></p></dd>
 <dt class="flush"><code>reduceleft</code></dt><dd><p>  Applies a binary operator to all elements of this list, going left to right.<br />
@@ -145,6 +187,14 @@
 <dt class="flush"><code>reduceright</code></dt><dd><p>  Applies a binary operator to all elements of this list, going right to left.<br />
   <em>((String, String) => String) => String</em></p></dd>
 <dt class="flush"><code>reverse</code></dt><dd><p>  Returns new list with elements in reversed order.<br />
+  <em>() => List[String]</em></p></dd>
+<dt class="flush"><code>sameelements</code></dt><dd><p>  Checks if the other iterable collection contains the same elements in the same order as this list.<br />
+  <em>(List[String]) => Boolean</em></p></dd>
+<dt class="flush"><code>slice</code></dt><dd><p>  Returns a list containing the elements greater than or equal to index from extending up to (but not including) index until of this list.<br />
+  <em>(Int, Int) => List[String]</em></p></dd>
+<dt class="flush"><code>sortby</code></dt><dd><p>  Sorts this List according to an ordering.<br />
+  <em>(String => String) => List[String]</em></p></dd>
+<dt class="flush"><code>sorted</code></dt><dd><p>  Sorts this list according to an Ordering.<br />
   <em>() => List[String]</em></p></dd>
 <dt class="flush"><code>tail</code></dt><dd><p>  Selects all elements except the first. Name conflict.<br />
   <em>() => List[String]</em></p></dd>
@@ -154,12 +204,16 @@
   <em>(Int) => List[String]</em></p></dd>
 <dt class="flush"><code>takewhile</code></dt><dd><p>  Takes longest prefix of elements that satisfy a predicate.<br />
   <em>(String => Boolean) => List[String]</em></p></dd>
+<dt class="flush"><code>tostring</code></dt><dd><p>  Converts this list to a string.<br />
+  <em>() => String</em></p></dd>
+<dt class="flush"><code>union</code></dt><dd><p>  Produces a new list which contains all elements of this list and also all elements of a given list.<br />
+  <em>(List[String]) => List[String]</em></p></dd>
 <dt class="flush"><code>updated</code></dt><dd><p>  A copy of this list with one single replaced element.<br />
   <em>(Int, String) => List[String]</em></p></dd>
-<dt class="flush"><code>zip</code></dt><dd><p>  Returns a list formed from this list and another list by combining corresponding elements in pairs.<br />
+<dt class="flush"><code>zip</code></dt><dd><p>  Returns a list formed from this list and another list by combining corresponding elements in pairs. Name conflict.<br />
   <em>(List[String]) => List[(String, String)]</em></p></dd>
 <dt class="flush"><code>zipwithindex</code></dt><dd><p>  Zips this list with its indices.<br />
-  <em>() => List[(Int, String)]</em></p></dd>
+  <em>() => List[(String, Int)]</em></p></dd>
 </dl>
 
 
@@ -181,15 +235,15 @@
 <li><p>Recursive quicksort algorithm:</p>
 
 <pre><code>quicksort() {
-  a=$(cat)
-  l=$(list $a | length)
-  if [ 2 -gt $l ]; then
-    list $a
+  arg=$(cat)
+  len=$(list $arg | length)
+  if [ 2 -gt $len ]; then
+    list $arg
   else
-    pivot=$(list $a | apply $(($l / 2)))
-    list $a | filter [ _ -lt $pivot ] | quicksort | cat
-    list $a | filter [ _ -eq $pivot ]
-    list $a | filter [ _ -gt $pivot ] | quicksort
+    pivot=$(list $arg | apply $(($len / 2)))
+    list $arg | filter [ _ -lt $pivot ] | quicksort | cat
+    list $arg | filter [ _ -eq $pivot ]
+    list $arg | filter [ _ -gt $pivot ] | quicksort
   fi
 }
 </code></pre></li>

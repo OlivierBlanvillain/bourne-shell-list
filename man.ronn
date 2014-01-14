@@ -11,16 +11,16 @@ bourne-shell-list(1) - functional programming in your shell
 
 ## COMMANDS
 
-Command semantics are inspired from methods of scala.collection.immutable.List. Names are lower case to match shell conventions: list, apply, cons, contains, count, drop, dropwhile, exists, filter, filternot, find, fold, foldleft, foldright, forall, head, init, isempty, last, length, map, mkstring, nonempty, reduce, reduceleft, reduceright, reverse, tail, take, takeright, takewhile, updated, zip, zipwithindex.
+Command semantics are inspired from methods of scala.collection.immutable.List. Names are lower case to match shell conventions: append, apply, cons, contains, count, diff, distinct, drop, dropright, dropwhile, endswith, equals, exists, filter, filternot, find, flatmap, flatten, fold, foldleft, foldright, forall, head, indexof, indexwhere, indices, init, intersect, isdefinedat, isempty, last, lastindexof, lastindexwhere, length, list, map, max, maxby, min, minby, mkstring, nonempty, padto, prefixlength, reduce, reduceleft, reduceright, reverse, sameelements, slice, sortby, sorted, tail, take, takeright, takewhile, tostring, union, updated, zip, zipwithindex.
 
-- `list`:
-    Constructs a list from arguments.  
-    *() => List[String]*
-
+- `append`:
+    Returns a new list containing the elements from the left hand operand followed by the elements from the right hand operand.  
+    *(List[String]) => List[String]*
+    
 - `apply`:
     Selects an element by its index in the list.  
-    *(Int) => A*
-
+    *(Int) => String*
+    
 - `cons`:
     Adds an element at the beginning of this list.  
     *(String) => List[String]*
@@ -28,126 +28,234 @@ Command semantics are inspired from methods of scala.collection.immutable.List. 
 - `contains`:
     Tests whether this list contains a given value as an element.  
     *(String) => Boolean*
-
+    
 - `count`:
     Counts the number of elements in the list which satisfy a predicate.  
     *(String => Boolean) => Int*
-
+    
+- `diff`:
+    Computes the multiset difference between this list and another list. Name conflict.  
+    *(List[String]) => List[String]*
+    
+- `distinct`:
+    Builds a new list from this list without any duplicate elements.  
+    *() => List[String]*
+    
 - `drop`:
     Selects all elements except first n ones.  
     *(Int) => List[String]*
-
+    
+- `dropright`:
+    Selects all elements except last n ones.  
+    *(Int) => List[String]*
+    
 - `dropwhile`:
     Drops longest prefix of elements that satisfy a predicate.  
     *(String => Boolean) => List[String]*
-
+    
+- `endswith`:
+    Tests whether this list ends with the given list.  
+    *(List[String]) => Boolean*
+    
+- `equals`:
+    Tests whether this list has the the same elements than the given in the same order.  
+    *(List[String]) => Boolean*
+    
 - `exists`:
     Tests whether a predicate holds for some of the elements of this list.  
     *(String => Boolean) => Boolean*
-
+    
 - `filter`:
     Selects all elements of this list which satisfy a predicate.  
     *(String => Boolean) => List[String]*
-
+    
 - `filternot`:
     Selects all elements of this list which do not satisfy a predicate.  
     *(String => Boolean) => List[String]*
-
+    
 - `find`:
     Finds the first element of the list satisfying a predicate.  
     *(String => Boolean) => String*
-
+    
+- `flatmap`:
+    Builds a new collection by applying a function to all elements of this list and using the elements of the resulting collections.  
+    *(String => List[String]) => List[String]*
+    
+- `flatten`:
+    Converts this list of traversable collections into a list formed by the elements of these traversable collections.  
+    *() => List[String]*
+    
 - `fold`:
     Folds the elements of this list using the specified associative binary operator.  
     *(String, (String, String) => String) => String*
-
+    
 - `foldleft`:
     Applies a binary operator to a start value and all elements of this list, going left to right.  
     *(String, (String, String) => String) => String*
-
+    
 - `foldright`:
     Applies a binary operator to all elements of this list and a start value, going right to left.  
     *(String, (String, String) => String) => String*
-
+    
 - `forall`:
     Tests whether a predicate holds for all elements of this list.  
     *(String => Boolean) => Boolean*
-
+    
 - `head`:
     Selects the first element of this list. Name conflict.  
     *() => String*
-
+    
+- `indexof`:
+    Finds index of first occurrence of some value in this list.  
+    *(String) => Int*
+    
+- `indexwhere`:
+    Finds index of the first element satisfying some predicate after or at some start index.  
+    *(String => Boolean, Int) => Int*
+    
+- `indices`:
+    Produces the range of all indices of this list.  
+    *() => List[Int]*
+    
 - `init`:
     Selects all elements except the last.  
     *() => List[String]*
-
+    
+- `intersect`:
+    Computes the multiset intersection between this list and another list.  
+    *(List[String]) => List[String]*
+    
+- `isdefinedat`:
+    Tests whether this list contains given index.  
+    *(Int) => Boolean*
+    
 - `isempty`:
     Tests whether the list is empty.  
     *() => Boolean*
-
+    
 - `last`:
     Selects the last element. Name conflict.  
     *() => String*
-
+    
+- `lastindexof`:
+    Finds index of last occurrence of some value in this list before or at a given end index.  
+    *(String) => Int*
+    
+- `lastindexwhere`:
+    Finds index of last element satisfying some predicate before or at given end index.  
+    *(String => Boolean) => Int*
+    
 - `length`:
     The length of the list.  
     *() => Int*
-
+    
+- `list`:
+    Constructs a list from arguments.  
+    *() => List[String]*
+    
 - `map`:
-    Builds a new collection by applying a function to all elements of this list.
+    Builds a new collection by applying a function to all elements of this list.  
+    *(String => String) => List[String]*
+    
+- `max`:
+    Finds the largest element.  
+    *() => String*
+    
+- `maxby`:
+    Finds the largest element according to an ordering.  
     *(String => String) => String*
-
+    
+- `min`:
+    Finds the smallest element.  
+    *() => String*
+    
+- `minby`:
+    Finds the smallest element according to an ordering.  
+    *(String => String) => String*
+    
 - `mkstring`:
     Displays all elements of this list in a string using a separator string.  
     *(String) => String*
-
+    
 - `nonempty`:
     Tests whether the list is not empty.  
     *() => Boolean*
-
+    
+- `padto`:
+    A copy of this list with an element value appended until a given target length is reached.  
+    *(Int, String) => List[String]*
+    
+- `prefixlength`:
+    Returns the length of the longest prefix whose elements all satisfy some predicate.  
+    *(String => Boolean) => Int*
+    
 - `reduce`:
     Reduces the elements of this list using the specified associative binary operator.  
     *((String, String) => String) => String*
-
+    
 - `reduceleft`:
     Applies a binary operator to all elements of this list, going left to right.  
     *((String, String) => String) => String*
-
+    
 - `reduceright`:
     Applies a binary operator to all elements of this list, going right to left.  
     *((String, String) => String) => String*
-
+    
 - `reverse`:
     Returns new list with elements in reversed order.  
     *() => List[String]*
-
+    
+- `sameelements`:
+    Checks if the other iterable collection contains the same elements in the same order as this list.  
+    *(List[String]) => Boolean*
+    
+- `slice`:
+    Returns a list containing the elements greater than or equal to index from extending up to (but not including) index until of this list.  
+    *(Int, Int) => List[String]*
+    
+- `sortby`:
+    Sorts this List according to an ordering.  
+    *(String => String) => List[String]*
+    
+- `sorted`:
+    Sorts this list according to an Ordering.  
+    *() => List[String]*
+    
 - `tail`:
     Selects all elements except the first. Name conflict.  
     *() => List[String]*
-
+    
 - `take`:
     Selects first n elements.  
     *(Int) => List[String]*
-
+    
 - `takeright`:
     Selects last n elements.  
     *(Int) => List[String]*
-
+    
 - `takewhile`:
     Takes longest prefix of elements that satisfy a predicate.  
     *(String => Boolean) => List[String]*
-
+    
+- `tostring`:
+    Converts this list to a string.  
+    *() => String*
+    
+- `union`:
+    Produces a new list which contains all elements of this list and also all elements of a given list.  
+    *(List[String]) => List[String]*
+    
 - `updated`:
     A copy of this list with one single replaced element.  
     *(Int, String) => List[String]*
-
+    
 - `zip`:
     Returns a list formed from this list and another list by combining corresponding elements in pairs. Name conflict.  
     *(List[String]) => List[(String, String)]*
-
+    
 - `zipwithindex`:
     Zips this list with its indices.  
-    *() => List[(Int, String)]*
+    *() => List[(String, Int)]*
 
 ## EXAMPLES
 1. Create files test1.txt, test2.txt, ..., test100.txt:  
@@ -165,18 +273,18 @@ Command semantics are inspired from methods of scala.collection.immutable.List. 
 4. Recursive quicksort algorithm:
 
        quicksort() {
-         a=$(cat)
-         l=$(list $a | length)
-         if [ 2 -gt $l ]; then
-           list $a
+         arg=$(cat)
+         len=$(list $arg | length)
+         if [ 2 -gt $len ]; then
+           list $arg
          else
-           pivot=$(list $a | apply $(($l / 2)))
-           list $a | filter [ _ -lt $pivot ] | quicksort | cat
-           list $a | filter [ _ -eq $pivot ]
-           list $a | filter [ _ -gt $pivot ] | quicksort
+           pivot=$(list $arg | apply $(($len / 2)))
+           list $arg | filter [ _ -lt $pivot ] | quicksort | cat
+           list $arg | filter [ _ -eq $pivot ]
+           list $arg | filter [ _ -gt $pivot ] | quicksort
          fi
        }
-    
+
 ## BUGS
 
 Report bugs on [GitHub](https://github.com/OlivierBlanvillain/bourne-shell-list) or by e-mail to **olivier.blanvillain@gmail.com**. 

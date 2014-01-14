@@ -23,8 +23,10 @@
 # dlrow olleh
 # ===================== 1 failed, 1 passed in 0.2 seconds =====================
 
-# See http://www.gnu.org/software/make/manual/html_node/Utilities-in-Makefiles
-# for a list of utilities usable when writing portable code.
+# http://www.gnu.org/software/make/manual/html_node/Utilities-in-Makefiles
+# gives a list of utilities usable when writing portable code:
+# awk cat cmp cp diff echo egrep expr false grep install-info ln ls
+# mkdir mv printf pwd rm rmdir sed sleep sort tar test touch tr true
 
 trap printresult 0
 

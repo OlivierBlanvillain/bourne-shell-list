@@ -1,5 +1,3 @@
-## Bourne Shell List
-
 **bourne-shell-list** brings the semantics of [Scala's lists][1] into any POSIX compilent shell. For example:
 
     quicksort() {
@@ -15,7 +13,7 @@
       fi
     }
 
-See [the manual][2] for the complete list of commands and additional examples. The library is fully tested on 8 shells. I've used am home made testing framework which is probably more useful than the library.
+See [the manual][2] for the complete list of commands and additional examples. The library is fully tested on 8 shells. I use a home made testing framework which is probably more useful than the library.
 
 ### Install:
 
