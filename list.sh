@@ -4,55 +4,15 @@ _tail=$(which tail 2>/dev/null)
 _zip=$(which zip 2>/dev/null)
 _diff=$(which diff 2>/dev/null)
 
-append() {
-  list "$@"
-  cat
-}
-
-apply() {
-  drop "$1" | head
-}
+# Core functions
 
 cons() {
   echo "$@"
   cat
 }
 
-contains() {
-  filter test _ = "$@" | nonempty
-}
-
-count() {
-  filter "$@" | length
-}
-
-diff() {
-  filter "! \$(list  \"$@\" | contains _)"
-}
-
-distinct() {
-  sort | uniq
-}
-
 drop() {
   $_tail -n +$(($1 + 1)) 2>/dev/null || sed "1,$1d"
-}
-
-dropright() {
-  reverse | drop "$@" | reverse
-}
-
-dropwhile() {
-  f=$(_desugar_function_1 "$@")
-  while read x; do
-    eval "$f" || break
-  done
-  echo "$x"
-  cat
-}
-
-endswith() {
-  takeright $(list "$@" | length) | equals "$@"
 }
 
 equals() {
@@ -63,15 +23,121 @@ equals() {
   return 0
 }
 
-exists() {
-  filter "$@" | nonempty
-}
-
 filter() {
   f=$(_desugar_function_1 "$@")
   while read x; do
     eval "$f" && echo "$x"
   done
+}
+
+foldleft() {
+  x="$1"
+  shift 1
+  f=$(_desugar_function_2 "$@")
+  while read y; do
+    x=$(eval "$f")
+  done
+  echo "$x"
+}
+
+head() {
+  read x
+  echo "$x"
+}
+
+length() {
+  wc -l 2>/dev/null || awk 'END{ print NR }'
+}
+
+indices() {
+  i=0
+  while read y; do
+    echo "$i"
+    i=$(($i + 1))
+  done
+}
+
+list() {
+  if [ $# -eq 1 ]; then
+    echo "$@" | tr ' ' '\n'
+  else
+    for i in "$@"; do echo $i; done
+  fi
+}
+
+map() {
+  f=$(_desugar_function_1 "$@")
+  while read x; do
+    eval "$f"
+  done
+}
+
+reverse() {
+  tac 2>/dev/null || sed '1!G;h;$!d'
+}
+
+tail() {
+  read x
+  cat
+}
+
+take() {
+  _head -n -$1 2>/dev/null || sed "1,$1!d"
+}
+
+zip() {
+  for y in "$@"; do
+    if read x; then
+      echo "$x $y"
+    else
+      echo "$y"
+    fi
+  done
+  cat
+}
+
+# Annex functions
+
+append() {
+  list "$@"
+  cat
+}
+
+apply() {
+  drop "$1" | head
+}
+
+contains() {
+  filter [ _ = "$@" ] | nonempty
+}
+
+count() {
+  filter "$@" | length
+}
+
+diff() {
+  filter "! \$(list \"$@\" | contains _)"
+}
+
+distinct() {
+  sort | uniq
+}
+
+dropright() {
+  reverse | drop "$@" | reverse
+}
+
+dropwhile() {
+  arg=$(cat)
+  echo "$arg" | drop $(echo "$arg" | indexof $(echo "$arg" | filternot "$@" | head))
+}
+
+endswith() {
+  takeright $(list "$@" | length) | equals "$@"
+}
+
+exists() {
+  filter "$@" | nonempty
 }
 
 filternot() {
@@ -94,16 +160,6 @@ fold() {
   foldleft "$@"
 }
 
-foldleft() {
-  x="$1"
-  shift 1
-  f=$(_desugar_function_2 "$@")
-  while read y; do
-    x=$(eval "$f")
-  done
-  echo "$x"
-}
-
 foldright() {
   reverse | foldleft $(_swap_args "$@")
 }
@@ -112,23 +168,13 @@ forall() {
   filternot "$@" | isempty
 }
 
-head() {
-  read x
-  echo "$x"
-}
-
 indexof() {
   _indexes_of_with_index "$@" | head | _second
 }
 
 indexwhere() {
   arg=$(cat)
-  list "$arg" | indexof $(list "$arg" | filter "$@" | head)
-}
-
-indices() {
-  i=0
-  map 'echo $i; i=$(($i+1))'
+  echo "$arg" | indexof $(echo "$arg" | filter "$@" | head)
 }
 
 init() {
@@ -140,11 +186,11 @@ intersect() {
 }
 
 isdefinedat() {
-  test "$(length)" -gt "$1"
+  [ "$(length)" -gt "$1" ]
 }
 
 isempty() {
-  ! nonempty
+  equals ''
 }
 
 last() {
@@ -157,26 +203,7 @@ lastindexof() {
 
 lastindexwhere() {
   arg=$(cat)
-  list "$arg" | lastindexof $(list "$arg" | filter "$@" | head)
-}
-
-length() {
-  wc -l 2>/dev/null || awk 'END{ print NR }'
-}
-
-list() {
-  if [ $# -eq 1 ]; then
-    echo "$@" | tr ' ' '\n'
-  else
-    for i in "$@"; do echo $i; done
-  fi
-}
-
-map() {
-  f=$(_desugar_function_1 "$@")
-  while read x; do
-    eval "$f"
-  done
+  echo "$arg" | lastindexof $(echo "$arg" | filter "$@" | head)
 }
 
 max() {
@@ -185,7 +212,7 @@ max() {
 
 maxby() {
   arg=$(cat)
-  list "$arg" | map "$@" | zip $(echo "$arg") | max | _second
+  echo "$arg" | map "$@" | zip $(echo "$arg") | max | _second
 }
 
 min() {
@@ -194,7 +221,7 @@ min() {
 
 minby() {
   arg=$(cat)
-  list "$arg" | map "$@" | zip $(echo "$arg") | min | _second
+  echo "$arg" | map "$@" | zip $(echo "$arg") | min | _second
 }
 
 mkstring() {
@@ -202,13 +229,13 @@ mkstring() {
 }
 
 nonempty() {
-  read x
+  ! isempty
 }
 
 padto() {
   arg=$(cat)
   echo "$arg"
-  seq 1 $(expr "$1" - $(list "$arg" | length)) | map echo "$2"
+  seq 1 $(expr "$1" - $(echo "$arg" | length)) | map echo "$2"
 }
 
 prefixlength() {
@@ -220,16 +247,12 @@ reduce() {
 }
 
 reduceleft() {
-  read x
-  foldleft "$x" "$@"
+  arg=$(cat)
+  echo "$arg" | tail | foldleft "$(echo "$arg" | head)" "$@"
 }
 
 reduceright() {
   reverse | reduceleft $(_swap_args "$@")
-}
-
-reverse() {
-  tac 2>/dev/null || sed '1!G;h;$!d'
 }
 
 sameelements() {
@@ -242,7 +265,7 @@ slice() {
 
 sortby() {
   arg=$(cat)
-  echo "$arg" | map "$@" | zip $(echo "$arg") | sort | map 'echo _1 | _second'
+  echo "$arg" | map "$@" | zip $(echo "$arg") | sort | map 'echo "_1" | _second'
 }
 
 sorted() {
@@ -253,25 +276,13 @@ startswith() {
   take $(list "$@" | length) | equals "$@"
 }
 
-tail() {
-  read x
-  cat
-}
-
-take() {
-  _head -n -$1 2>/dev/null || sed "1,$1!d"
-}
-
 takeright() {
   reverse | take "$@" | reverse
 }
 
 takewhile() {
-  f=$(_desugar_function_1 "$@")
-  while read x; do
-    eval "$f" || break
-    echo "$x"
-  done
+  arg=$(cat)
+  echo "$arg" | take $(echo "$arg" | indexof $(echo "$arg" | filternot "$@" | head))
 }
 
 tostring() {
@@ -283,30 +294,19 @@ union() {
 }
 
 updated() {
-  for x in $(seq 1 "$1"); do
-    read x
-    echo "$x"
-  done
-  read x
+  arg=$(cat)
+  echo "$arg" | take "$1"
   echo "$2"
-  cat
-}
-
-zip() {
-  for y in "$@"; do
-    if read x; then
-      echo "$x $y"
-    else
-      echo "$y"
-    fi
-  done
-  cat
+  echo "$arg" | drop "$1" | tail
 }
 
 zipwithindex() {
   arg=$(cat)
-  list "$arg" | zip $(list "$arg" | indices )
+  echo "$arg" | zip $(echo "$arg" | indices )
 }
+
+# Implementation functions
+
 _number_of_underscores() {
   echo "$@" | awk -F_ '{ print NF-1 }'
 }
@@ -341,7 +341,7 @@ _swap_args() {
 }
 
 _indexes_of_with_index() {
-  zipwithindex | filter test '"$(echo _1 | _first)"' = "$@"
+  zipwithindex | filter [ '"$(echo _1 | _first)"' = "$@" ]
 }
 
 _first() {
