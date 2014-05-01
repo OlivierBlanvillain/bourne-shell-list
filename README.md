@@ -13,7 +13,7 @@
       fi
     }
 
-See [the manual][2] for the complete list of commands and additional examples. The library is fully tested on 8 shells. I use a home made testing framework which is probably more useful than the library.
+See [the manual][2] for the complete list of commands and additional examples. Tests are run on 8 shells, but that's still nothing more than shell scripting so don't take anything too seriously.
 
 ### Install:
 
